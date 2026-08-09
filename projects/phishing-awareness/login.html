@@ -1,347 +1,441 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign in – Phishing Awareness</title>
-<style>
-  :root{
-    --blue:#1a73e8;
-    --blue-dark:#1558b0;
-    --text:#202124;
-    --gray:#5f6368;
-    --border:#dadce0;
-    --bg:#ffffff;
-    --page-bg:#f6f7f9;
-    --error:#d93025;
-    --success:#188038;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    font-family:'Google Sans','Segoe UI', Roboto, Arial, sans-serif;
-    background:var(--page-bg);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    min-height:100vh;
-    padding:20px;
-  }
-  .card{
-    background:var(--bg);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:44px 36px 32px;
-    width:100%;
-    max-width:400px;
-    box-shadow:0 1px 3px rgba(0,0,0,0.08);
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in – Phishing Awareness | Celton Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  .brand-logo{
-    display:block;
-    width:76px;
-    height:auto;
-    margin:0 auto 16px;
-    border-radius:6px;
-  }
+:root {
+  --bg: #eef0f8;
+  --bg-white: #ffffff;
+  --text: #1e2440;
+  --text-muted: #5a6280;
+  --text-light: #8b92a8;
+  --border: #d4d8e8;
+  --blue: #6b7fd7;
+  --green: #188038;
+  --red: #d93025;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-full: 999px;
+  --font: "Inter", system-ui, -apple-system, sans-serif;
+  --serif: "Libre Baskerville", Georgia, serif;
+  --shadow-lg: 0 12px 40px rgba(30, 36, 64, 0.12);
+}
 
-  .title{
-    font-size:22px;
-    font-weight:500;
-    color:var(--text);
-    text-align:center;
-    margin:0 0 6px;
-  }
-  .subtitle{
-    font-size:14px;
-    color:var(--gray);
-    text-align:center;
-    margin:0 0 22px;
-  }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-  .tab-row{
-    display:flex;
-    border-bottom:1px solid var(--border);
-    margin-bottom:24px;
-  }
-  .tab-row button{
-    flex:1;
-    background:none;
-    border:none;
-    padding:10px 0;
-    font-size:13px;
-    font-weight:500;
-    color:var(--gray);
-    cursor:pointer;
-    border-bottom:2px solid transparent;
-    margin-bottom:-1px;
-  }
-  .tab-row button.active{
-    color:var(--blue);
-    border-bottom:2px solid var(--blue);
-  }
+a { color: inherit; text-decoration: none; }
+.hidden { display: none !important; }
 
-  .field{
-    position:relative;
-    margin-bottom:20px;
-  }
-  .field input{
-    width:100%;
-    padding:12px 12px;
-    font-size:15px;
-    border:1px solid var(--border);
-    border-radius:4px;
-    outline:none;
-    color:var(--text);
-    background:transparent;
-  }
-  .field input:focus{
-    border:1.5px solid var(--blue);
-    padding:11.5px 11.5px;
-  }
-  .field label{
-    position:absolute;
-    left:12px;
-    top:12px;
-    font-size:15px;
-    color:var(--gray);
-    background:var(--bg);
-    padding:0 4px;
-    pointer-events:none;
-    transition:all .12s ease;
-  }
-  .field input:focus + label,
-  .field input:not(:placeholder-shown) + label{
-    top:-9px;
-    font-size:12px;
-    color:var(--blue);
-  }
+.bg-shapes {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.bg-shapes::before {
+  content: "";
+  position: absolute;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(180,190,230,0.4) 0%, transparent 70%);
+  top: -100px;
+  right: -80px;
+}
+.bg-shapes::after {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,210,240,0.35) 0%, transparent 70%);
+  bottom: 10%;
+  left: -100px;
+}
 
-  .msg{
-    font-size:13px;
-    margin:-6px 0 14px;
-    padding:9px 11px;
-    border-radius:4px;
-    display:none;
-  }
-  .msg.error{
-    display:block;
-    background:#fce8e6;
-    color:var(--error);
-  }
-  .msg.success{
-    display:block;
-    background:#e6f4ea;
-    color:var(--success);
-  }
+header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6%;
+  height: 66px;
+  background: rgba(238,240,248,0.82);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(212,216,232,0.55);
+}
 
-  .actions{
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    margin-top:8px;
-    gap:10px;
-  }
-  button.next, button.secondary{
-    border:none;
-    padding:10px 22px;
-    font-size:14px;
-    font-weight:500;
-    border-radius:4px;
-    cursor:pointer;
-  }
-  button.next{
-    background:var(--blue);
-    color:#fff;
-  }
-  button.next:hover{ background:var(--blue-dark); }
-  button.next:disabled{ background:#a8c7fa; cursor:not-allowed; }
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+.logo span { color: var(--blue); }
+.logo-badge {
+  width: 34px;
+  height: 34px;
+  background: var(--text);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
 
-  button.secondary{
-    background:none;
-    color:var(--blue);
-    padding:10px 6px;
-  }
-  button.secondary:hover{ text-decoration:underline; }
+.back-link {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.15s;
+}
+.back-link:hover { color: var(--text); }
 
-  .footer-note{
-    text-align:center;
-    font-size:12px;
-    color:var(--gray);
-    margin-top:28px;
-  }
-  .hidden{display:none !important;}
+.auth-wrap {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem 3rem;
+}
 
-  .spinner-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(255,255,255,.9);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:14px;
-    z-index:999;
-  }
-  .spinner{
-    width:36px;height:36px;
-    border:3px solid #e0e0e0;
-    border-top-color:var(--blue);
-    border-radius:50%;
-    animation:spin .8s linear infinite;
-  }
-  @keyframes spin{ to { transform:rotate(360deg); } }
-  .spinner-overlay p{
-    color:var(--gray);
-    font-size:13px;
-    font-weight:500;
-  }
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-white);
+  border-radius: 22px;
+  border: 1px solid rgba(212,216,232,0.8);
+  box-shadow: var(--shadow-lg);
+  padding: 2.25rem 2rem;
+  animation: fadeUp 0.45s ease;
+}
 
-  .country-row{
-    display:flex;
-    gap:8px;
-  }
-  .country-row select{
-    flex:0 0 90px;
-    padding:12px 6px;
-    font-size:14px;
-    border:1px solid var(--border);
-    border-radius:4px;
-    background:var(--bg);
-    color:var(--text);
-  }
-  .country-row .field{
-    flex:1;
-    margin-bottom:0;
-  }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-  #recaptcha-container{ margin-bottom:14px; }
-</style>
+.auth-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.auth-header h1 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35rem;
+  color: var(--text);
+}
+
+.auth-header p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.tabs {
+  display: flex;
+  background: var(--bg);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border);
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.tab.active {
+  background: var(--bg-white);
+  color: var(--text);
+  box-shadow: 0 1px 4px rgba(30,36,64,0.08);
+}
+
+.tab:hover:not(.active) { color: var(--text); }
+
+.field {
+  position: relative;
+  margin-bottom: 1.1rem;
+}
+
+.field input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.field input:focus {
+  border-color: var(--blue);
+  background: #fff;
+}
+
+.field input::placeholder { color: transparent; }
+
+.field label {
+  position: absolute;
+  left: 1rem;
+  top: 0.8rem;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  background: transparent;
+  padding: 0 4px;
+  pointer-events: none;
+  transition: all 0.12s ease;
+}
+
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label {
+  top: -0.55rem;
+  left: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--blue);
+  background: var(--bg-white);
+}
+
+.msg {
+  font-size: 0.85rem;
+  margin: -0.25rem 0 1rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-sm);
+  display: none;
+}
+
+.msg.error {
+  display: block;
+  background: #fdecea;
+  color: var(--red);
+  border: 1px solid #f5c6c0;
+}
+
+.msg.success {
+  display: block;
+  background: #e6f4ea;
+  color: var(--green);
+  border: 1px solid #c8e6c9;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+button.next {
+  background: var(--text);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.18s, transform 0.15s;
+}
+
+button.next:hover:not(:disabled) {
+  background: #2a3150;
+  transform: translateY(-1px);
+}
+
+button.next:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.footer-note {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-light);
+  margin-top: 1.5rem;
+}
+
+.spinner-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(238, 240, 248, 0.92);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  z-index: 999;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #d4d8e8;
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.spinner-overlay p {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 1.15rem 6%;
+  color: var(--text-light);
+  font-size: 0.8rem;
+  border-top: 1px solid rgba(212,216,232,0.5);
+}
+
+@media (max-width: 480px) {
+  .auth-card { padding: 1.75rem 1.35rem; }
+  header { padding: 0 5%; }
+}
+  </style>
 </head>
 <body>
+  <div class="bg-shapes" aria-hidden="true"></div>
 
-<div class="spinner-overlay" id="initSpinner">
-  <div class="spinner"></div>
-  <p>Connecting to Phishing Awareness...</p>
-</div>
-
-<div class="card">
-  <img class="brand-logo" src="data:image/jpeg;base64,PLACEHOLDER" alt="Celton Solutions" onerror="this.style.display='none'">
-  <h1 class="title" id="formTitle">Sign in</h1>
-  <p class="subtitle" id="formSubtitle">to continue to Phishing Awareness</p>
-
-  <div class="tab-row">
-    <button id="loginTabBtn" class="active" onclick="switchTab('login')">Login</button>
-    <button id="signupTabBtn" onclick="switchTab('signup')">Sign Up</button>
-    <button id="phoneTabBtn" onclick="switchTab('phone')">Phone</button>
+  <div class="spinner-overlay" id="initSpinner">
+    <div class="spinner"></div>
+    <p>Connecting to Phishing Awareness…</p>
   </div>
 
-  <!-- Email Login -->
-  <form id="loginForm">
-    <div class="field">
-      <input type="email" id="loginEmail" placeholder=" " required>
-      <label for="loginEmail">Email</label>
-    </div>
-    <div class="field">
-      <input type="password" id="loginPassword" placeholder=" " required>
-      <label for="loginPassword">Password</label>
-    </div>
+  <header>
+    <a href="phishing.html" class="logo">
+      <div class="logo-badge">CS</div>
+      Celton<span>.</span>
+    </a>
+    <a href="phishing.html" class="back-link">← Back to training</a>
+  </header>
 
-    <div class="msg" id="loginMsg"></div>
-
-    <div class="actions">
-      <button type="submit" class="next" id="loginBtn">Log In</button>
-    </div>
-  </form>
-
-  <!-- Email Signup -->
-  <form id="signupForm" class="hidden">
-    <div class="field">
-      <input type="email" id="signupEmail" placeholder=" " required>
-      <label for="signupEmail">Email</label>
-    </div>
-    <div class="field">
-      <input type="password" id="signupPassword" placeholder=" " required minlength="6">
-      <label for="signupPassword">Password (min 6 characters)</label>
-    </div>
-
-    <div class="msg" id="signupMsg"></div>
-
-    <div class="actions">
-      <button type="submit" class="next" id="signupBtn">Create Account</button>
-    </div>
-  </form>
-
-  <!-- Phone SMS Login -->
-  <form id="phoneForm" class="hidden">
-    <div class="country-row">
-      <select id="countryCode">
-        <option value="+1">+1 US</option>
-        <option value="+44">+44 UK</option>
-        <option value="+91" selected>+91 IN</option>
-        <option value="+61">+61 AU</option>
-        <option value="+971">+971 AE</option>
-      </select>
-      <div class="field">
-        <input type="tel" id="phoneNumber" placeholder=" " required>
-        <label for="phoneNumber">Phone number</label>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 id="formTitle">Sign in</h1>
+        <p id="formSubtitle">to continue to Phishing Awareness</p>
       </div>
+
+      <div class="tabs">
+        <button type="button" class="tab active" id="loginTabBtn" onclick="switchTab('login')">Login</button>
+        <button type="button" class="tab" id="signupTabBtn" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <form id="loginForm">
+        <div class="field">
+          <input type="email" id="loginEmail" placeholder=" " required autocomplete="email" />
+          <label for="loginEmail">Email</label>
+        </div>
+        <div class="field">
+          <input type="password" id="loginPassword" placeholder=" " required autocomplete="current-password" />
+          <label for="loginPassword">Password</label>
+        </div>
+        <div class="msg" id="loginMsg"></div>
+        <div class="actions">
+          <button type="submit" class="next" id="loginBtn">Log In</button>
+        </div>
+      </form>
+
+      <form id="signupForm" class="hidden">
+        <div class="field">
+          <input type="email" id="signupEmail" placeholder=" " required autocomplete="email" />
+          <label for="signupEmail">Email</label>
+        </div>
+        <div class="field">
+          <input type="password" id="signupPassword" placeholder=" " required minlength="6" autocomplete="new-password" />
+          <label for="signupPassword">Password (min 6 characters)</label>
+        </div>
+        <div class="msg" id="signupMsg"></div>
+        <div class="actions">
+          <button type="submit" class="next" id="signupBtn">Create Account</button>
+        </div>
+      </form>
+
+      <p class="footer-note">Phishing Awareness Mini Games · Learn to spot the red flags</p>
     </div>
+  </div>
 
-    <div id="recaptcha-container"></div>
+  <footer>
+    © 2026 Celton Solutions. Internal Security Awareness Program.
+  </footer>
 
-    <div class="msg" id="phoneMsg"></div>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-    <div class="actions">
-      <button type="submit" class="next" id="sendOtpBtn">Send Code</button>
-    </div>
-  </form>
-
-  <!-- OTP Verification -->
-  <form id="otpForm" class="hidden">
-    <div class="field">
-      <input type="text" id="otpCode" placeholder=" " inputmode="numeric" maxlength="6" required>
-      <label for="otpCode">6-digit code</label>
-    </div>
-
-    <div class="msg" id="otpMsg"></div>
-
-    <div class="actions">
-      <button type="button" class="secondary" id="backToPhoneBtn" onclick="backToPhone()">Change number</button>
-      <button type="submit" class="next" id="verifyOtpBtn">Verify</button>
-    </div>
-  </form>
-
-  <p class="footer-note">Phishing Awareness Mini Games &middot; Learn to spot the red flags</p>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-<script>
-  // ============================================================
-  // FIREBASE CONFIGURATION — replace with your own project config
-  // ============================================================
-const firebaseConfig = {
-  apiKey: "AIzaSyCMAoi6Foulpl5y5Je1A9swAhJueXe2zpk",
-  authDomain: "phishing-awareness-67.firebaseapp.com",
-  projectId: "phishing-awareness-67",
-  storageBucket: "phishing-awareness-67.firebasestorage.app",
-  messagingSenderId: "362571582561",
-  appId: "1:362571582561:web:679fae8fa972473e7bae20",
-};
+  <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCMAoi6Foulpl5y5Je1A9swAhJueXe2zpk",
+    authDomain: "phishing-awareness-67.firebaseapp.com",
+    projectId: "phishing-awareness-67",
+    storageBucket: "phishing-awareness-67.firebasestorage.app",
+    messagingSenderId: "362571582561",
+    appId: "1:362571582561:web:679fae8fa972473e7bae20",
+  };
 
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.firestore();
 
   const REDIRECT_URL = "app.html";
-  let confirmationResult = null;
-  let recaptchaVerifier = null;
 
-  window.addEventListener('load', () => {
-    document.getElementById('initSpinner').classList.add('hidden');
+  window.addEventListener("load", () => {
+    document.getElementById("initSpinner").classList.add("hidden");
   });
 
   auth.onAuthStateChanged((user) => {
@@ -350,14 +444,13 @@ const firebaseConfig = {
     }
   });
 
-  // ---------- Button click sound ----------
   let audioCtx;
   function playClickSound() {
     try {
       audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      osc.type = 'sine';
+      osc.type = "sine";
       osc.frequency.setValueAtTime(880, audioCtx.currentTime);
       osc.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.08);
       gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
@@ -367,212 +460,113 @@ const firebaseConfig = {
       osc.stop(audioCtx.currentTime + 0.12);
     } catch (e) {}
   }
-  document.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', playClickSound);
+  document.querySelectorAll("button").forEach((btn) => {
+    btn.addEventListener("click", playClickSound);
   });
 
   function hideAllForms() {
-    ['loginForm','signupForm','phoneForm','otpForm'].forEach(id => {
-      document.getElementById(id).classList.add('hidden');
+    ["loginForm", "signupForm"].forEach((id) => {
+      document.getElementById(id).classList.add("hidden");
     });
   }
 
   function clearMessages() {
-    ['loginMsg','signupMsg','phoneMsg','otpMsg'].forEach(id => {
+    ["loginMsg", "signupMsg"].forEach((id) => {
       const el = document.getElementById(id);
-      el.className = 'msg';
-      el.textContent = '';
+      el.className = "msg";
+      el.textContent = "";
     });
   }
 
   function switchTab(tab) {
-    const loginTabBtn = document.getElementById('loginTabBtn');
-    const signupTabBtn = document.getElementById('signupTabBtn');
-    const phoneTabBtn = document.getElementById('phoneTabBtn');
-    const formTitle = document.getElementById('formTitle');
-    const formSubtitle = document.getElementById('formSubtitle');
+    const loginTabBtn = document.getElementById("loginTabBtn");
+    const signupTabBtn = document.getElementById("signupTabBtn");
+    const formTitle = document.getElementById("formTitle");
+    const formSubtitle = document.getElementById("formSubtitle");
 
     hideAllForms();
     clearMessages();
-    loginTabBtn.classList.remove('active');
-    signupTabBtn.classList.remove('active');
-    phoneTabBtn.classList.remove('active');
+    loginTabBtn.classList.remove("active");
+    signupTabBtn.classList.remove("active");
 
-    if (tab === 'login') {
-      document.getElementById('loginForm').classList.remove('hidden');
-      loginTabBtn.classList.add('active');
-      formTitle.textContent = 'Sign in';
-      formSubtitle.textContent = 'to continue to Phishing Awareness';
-    } else if (tab === 'signup') {
-      document.getElementById('signupForm').classList.remove('hidden');
-      signupTabBtn.classList.add('active');
-      formTitle.textContent = 'Create account';
-      formSubtitle.textContent = 'to join Phishing Awareness';
-    } else if (tab === 'phone') {
-      document.getElementById('phoneForm').classList.remove('hidden');
-      phoneTabBtn.classList.add('active');
-      formTitle.textContent = 'Sign in with phone';
-      formSubtitle.textContent = 'We will text you a verification code';
-      setupRecaptcha();
+    if (tab === "login") {
+      document.getElementById("loginForm").classList.remove("hidden");
+      loginTabBtn.classList.add("active");
+      formTitle.textContent = "Sign in";
+      formSubtitle.textContent = "to continue to Phishing Awareness";
+    } else {
+      document.getElementById("signupForm").classList.remove("hidden");
+      signupTabBtn.classList.add("active");
+      formTitle.textContent = "Create account";
+      formSubtitle.textContent = "to join Phishing Awareness";
     }
-  }
-
-  function backToPhone() {
-    hideAllForms();
-    clearMessages();
-    document.getElementById('phoneForm').classList.remove('hidden');
-    document.getElementById('phoneTabBtn').classList.add('active');
-    document.getElementById('formTitle').textContent = 'Sign in with phone';
-    document.getElementById('formSubtitle').textContent = 'We will text you a verification code';
   }
 
   function showMessage(boxId, text, type) {
     const box = document.getElementById(boxId);
     box.textContent = text;
-    box.className = 'msg ' + type;
+    box.className = "msg " + type;
   }
 
   function friendlyError(error) {
     const map = {
-      'auth/invalid-email': 'Please enter a valid email address.',
-      'auth/user-not-found': 'No account found with that email.',
-      'auth/wrong-password': 'Incorrect password. Please try again.',
-      'auth/email-already-in-use': 'An account with this email already exists.',
-      'auth/weak-password': 'Password should be at least 6 characters.',
-      'auth/invalid-credential': 'Invalid email or password.',
-      'auth/too-many-requests': 'Too many attempts. Please try again later.',
-      'auth/invalid-phone-number': 'Please enter a valid phone number.',
-      'auth/invalid-verification-code': 'Incorrect code. Please try again.',
-      'auth/code-expired': 'Code expired. Please request a new one.'
+      "auth/invalid-email": "Please enter a valid email address.",
+      "auth/user-not-found": "No account found with that email.",
+      "auth/wrong-password": "Incorrect password. Please try again.",
+      "auth/email-already-in-use": "An account with this email already exists.",
+      "auth/weak-password": "Password should be at least 6 characters.",
+      "auth/invalid-credential": "Invalid email or password.",
+      "auth/too-many-requests": "Too many attempts. Please try again later.",
     };
     return map[error.code] || error.message;
   }
 
-  // ---------- Email Login ----------
-  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value;
-    const btn = document.getElementById('loginBtn');
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+    const btn = document.getElementById("loginBtn");
 
     btn.disabled = true;
-    btn.textContent = 'Logging in...';
+    btn.textContent = "Logging in…";
 
     try {
       await auth.signInWithEmailAndPassword(email, password);
-      showMessage('loginMsg', 'Login successful! Redirecting...', 'success');
+      showMessage("loginMsg", "Login successful! Redirecting…", "success");
       window.location.href = REDIRECT_URL;
     } catch (error) {
-      showMessage('loginMsg', friendlyError(error), 'error');
+      showMessage("loginMsg", friendlyError(error), "error");
       btn.disabled = false;
-      btn.textContent = 'Log In';
+      btn.textContent = "Log In";
     }
   });
 
-  // ---------- Email Signup ----------
-  document.getElementById('signupForm').addEventListener('submit', async (e) => {
+  document.getElementById("signupForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const email = document.getElementById('signupEmail').value.trim();
-    const password = document.getElementById('signupPassword').value;
-    const btn = document.getElementById('signupBtn');
+    const email = document.getElementById("signupEmail").value.trim();
+    const password = document.getElementById("signupPassword").value;
+    const btn = document.getElementById("signupBtn");
 
     btn.disabled = true;
-    btn.textContent = 'Creating account...';
+    btn.textContent = "Creating account…";
 
     try {
       const cred = await auth.createUserWithEmailAndPassword(email, password);
 
-      await db.collection('users').doc(cred.user.uid).set({
+      await db.collection("users").doc(cred.user.uid).set({
         email: email,
         score: 0,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
 
-      showMessage('signupMsg', 'Account created! Redirecting...', 'success');
+      showMessage("signupMsg", "Account created! Redirecting…", "success");
       window.location.href = REDIRECT_URL;
     } catch (error) {
-      showMessage('signupMsg', friendlyError(error), 'error');
+      showMessage("signupMsg", friendlyError(error), "error");
       btn.disabled = false;
-      btn.textContent = 'Create Account';
+      btn.textContent = "Create Account";
     }
   });
-
-  // ---------- Phone SMS Login ----------
-  function setupRecaptcha() {
-    if (recaptchaVerifier) return;
-    recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-      size: 'normal'
-    });
-    recaptchaVerifier.render();
-  }
-
-  document.getElementById('phoneForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const code = document.getElementById('countryCode').value;
-    const number = document.getElementById('phoneNumber').value.trim();
-    const fullNumber = code + number.replace(/\D/g, '');
-    const btn = document.getElementById('sendOtpBtn');
-
-    btn.disabled = true;
-    btn.textContent = 'Sending...';
-
-    try {
-      confirmationResult = await auth.signInWithPhoneNumber(fullNumber, recaptchaVerifier);
-      showMessage('phoneMsg', 'Code sent! Check your SMS.', 'success');
-      hideAllForms();
-      clearMessages();
-      document.getElementById('otpForm').classList.remove('hidden');
-      document.getElementById('formTitle').textContent = 'Enter verification code';
-      document.getElementById('formSubtitle').textContent = 'Sent to ' + fullNumber;
-    } catch (error) {
-      showMessage('phoneMsg', friendlyError(error), 'error');
-      if (recaptchaVerifier) {
-        recaptchaVerifier.render().then((widgetId) => {
-          if (window.grecaptcha) window.grecaptcha.reset(widgetId);
-        });
-      }
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Send Code';
-    }
-  });
-
-  // ---------- OTP Verify ----------
-  document.getElementById('otpForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const otp = document.getElementById('otpCode').value.trim();
-    const btn = document.getElementById('verifyOtpBtn');
-
-    if (!confirmationResult) {
-      showMessage('otpMsg', 'Session expired. Please request a new code.', 'error');
-      return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = 'Verifying...';
-
-    try {
-      const cred = await confirmationResult.confirm(otp);
-
-      const userRef = db.collection('users').doc(cred.user.uid);
-      const userDoc = await userRef.get();
-      if (!userDoc.exists) {
-        await userRef.set({
-          phoneNumber: cred.user.phoneNumber,
-          score: 0,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      }
-
-      showMessage('otpMsg', 'Verified! Redirecting...', 'success');
-      window.location.href = REDIRECT_URL;
-    } catch (error) {
-      showMessage('otpMsg', friendlyError(error), 'error');
-      btn.disabled = false;
-      btn.textContent = 'Verify';
-    }
-  });
-</script>
-
+  </script>
 </body>
 </html>
