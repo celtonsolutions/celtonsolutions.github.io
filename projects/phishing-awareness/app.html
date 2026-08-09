@@ -4,35 +4,75 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Phishing Awareness Game | Celton Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --gold:#b8860b;
-    --gold-dark:#8a660a;
-    --gold-light:#d4a017;
-    --cream:#faf6ee;
-    --cream-card:#fffdf8;
-    --cream-border:#e9e0cd;
-    --ink:#2e2a24;
-    --grey:#8a8272;
-    --success:#2e7d4f;
-    --success-bg:#eef7f0;
-    --error:#b3402c;
-    --error-bg:#fbeeeb;
+    --bg: #eef0f8;
+    --bg-white: #ffffff;
+    --bg-dark: #1a1a2e;
+    --text: #1e2440;
+    --text-muted: #5a6280;
+    --text-light: #8b92a8;
+    --border: #d4d8e8;
+    --yellow: #f5e66b;
+    --blue: #6b7fd7;
+    --success: #2e7d4f;
+    --success-bg: #eef7f0;
+    --error: #b3402c;
+    --error-bg: #fbeeeb;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-full: 999px;
+    --font: "Inter", system-ui, -apple-system, sans-serif;
+    --serif: "Libre Baskerville", Georgia, serif;
+    --shadow: 0 4px 24px rgba(30, 36, 64, 0.08);
+    --shadow-lg: 0 12px 40px rgba(30, 36, 64, 0.12);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{
-    font-family:'Google Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-    background:var(--cream);
-    color:var(--ink);
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
     min-height:100vh;
     -webkit-font-smoothing:antialiased;
+    overflow-x: hidden;
+  }
+
+  .bg-shapes {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .bg-shapes::before {
+    content: "";
+    position: absolute;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(180,190,230,0.35) 0%, transparent 70%);
+    top: -100px;
+    right: -80px;
+  }
+  .bg-shapes::after {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,210,240,0.3) 0%, transparent 70%);
+    bottom: 10%;
+    left: -100px;
   }
 
   /* ============ SPINNER OVERLAY ============ */
   .spinner-overlay{
     position:fixed;
     inset:0;
-    background:rgba(250,246,238,.95);
+    background:rgba(238,240,248,.95);
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -42,20 +82,24 @@
   }
   .spinner{
     width:40px;height:40px;
-    border:3px solid #ecdfc2;
-    border-top-color:var(--gold);
+    border:3px solid #d4d8e8;
+    border-top-color:var(--blue);
     border-radius:50%;
     animation:spin 0.8s linear infinite;
   }
   @keyframes spin{ to { transform:rotate(360deg); } }
-  .spinner-overlay p{color:var(--grey);font-size:.85rem;font-weight:500;}
+  .spinner-overlay p{color:var(--text-muted);font-size:.85rem;font-weight:500;}
   .hidden{display:none !important;}
 
   /* ============ HEADER ============ */
   header{
-    background:var(--cream-card);
-    border-bottom:1px solid var(--cream-border);
-    padding:18px 6%;
+    position: relative;
+    z-index: 10;
+    background: rgba(238,240,248,0.85);
+    backdrop-filter: blur(14px);
+    border-bottom:1px solid rgba(212,216,232,0.6);
+    padding:0 6%;
+    height: 66px;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -64,17 +108,17 @@
   }
   .brand{display:flex;align-items:center;gap:12px;}
   .logo-badge{
-    width:38px;height:38px;
-    background:var(--gold);
-    border-radius:10px;
+    width:36px;height:36px;
+    background:var(--text);
+    border-radius:9px;
     display:flex;align-items:center;justify-content:center;
-    color:#fff;font-weight:700;font-size:.95rem;
+    color:#fff;font-weight:700;font-size:.85rem;
     letter-spacing:.02em;
   }
   .brand-text{display:flex;flex-direction:column;line-height:1.15;}
-  .brand-text b{font-size:1.02rem;font-weight:600;color:var(--ink);}
-  .brand-text span{font-size:.72rem;color:var(--grey);}
-
+  .brand-text b{font-size:1.02rem;font-weight:700;color:var(--text);letter-spacing:-0.02em;}
+  .brand-text b span{color:var(--blue);}
+  .brand-text span{font-size:.72rem;color:var(--text-muted);}
   .user-area{
     display:flex;
     align-items:center;
@@ -82,54 +126,58 @@
     flex-wrap:wrap;
   }
   .score-pill{
-    background:#f4e8cb;
-    color:var(--gold-dark);
+    background: rgba(107,127,215,0.12);
+    color:var(--blue);
     font-weight:600;
     font-size:.82rem;
     padding:7px 16px;
-    border-radius:20px;
-    border:1px solid #ecd9a8;
+    border-radius:var(--radius-full);
+    border:1px solid rgba(107,127,215,0.2);
   }
   .level-pill{
-    background:#e9f1ff;
-    color:#2a5db0;
+    background: var(--bg-white);
+    color:var(--text);
     font-weight:600;
     font-size:.82rem;
     padding:7px 16px;
-    border-radius:20px;
-    border:1px solid #cfe0fb;
+    border-radius:var(--radius-full);
+    border:1px solid var(--border);
   }
   .user-email{
     font-size:.82rem;
-    color:var(--grey);
+    color:var(--text-muted);
   }
   .icon-btn{
     background:transparent;
-    border:1px solid var(--cream-border);
-    color:var(--ink);
+    border:1px solid var(--border);
+    color:var(--text);
     padding:7px 12px;
     border-radius:8px;
     font-weight:500;
     font-size:.82rem;
     cursor:pointer;
     transition:all .15s ease;
+    font-family: inherit;
   }
-  .icon-btn:hover{border-color:var(--gold);color:var(--gold-dark);}
+  .icon-btn:hover{border-color:var(--blue);color:var(--blue);}
   .logout-btn{
     background:transparent;
-    border:1px solid var(--cream-border);
-    color:var(--ink);
+    border:1px solid var(--border);
+    color:var(--text);
     padding:7px 16px;
-    border-radius:8px;
+    border-radius:var(--radius-full);
     font-weight:500;
     font-size:.82rem;
     cursor:pointer;
     transition:all .15s ease;
+    font-family: inherit;
   }
   .logout-btn:hover{border-color:var(--error);color:var(--error);}
 
   /* ============ MAIN CONTAINER ============ */
   main{
+    position: relative;
+    z-index: 1;
     max-width:760px;
     margin:0 auto;
     padding:48px 5% 90px 5%;
@@ -139,22 +187,24 @@
     margin-bottom:36px;
   }
   .intro h1{
-    font-size:1.6rem;
-    font-weight:600;
+    font-family: var(--serif);
+    font-size:clamp(1.5rem, 3.5vw, 1.85rem);
+    font-weight:400;
     margin-bottom:8px;
-    color:var(--ink);
+    color:var(--text);
+    letter-spacing: -0.02em;
   }
   .intro p{
-    color:var(--grey);
-    font-size:.92rem;
+    color:var(--text-muted);
+    font-size:.95rem;
   }
 
   /* ============ TABS ============ */
   .tabs{
     display:flex;
-    background:var(--cream-card);
-    border:1px solid var(--cream-border);
-    border-radius:12px;
+    background:var(--bg-white);
+    border:1px solid rgba(212,216,232,0.8);
+    border-radius:var(--radius-full);
     padding:5px;
     margin-bottom:16px;
     gap:5px;
@@ -164,19 +214,20 @@
     border:none;
     background:transparent;
     padding:11px 0;
-    border-radius:8px;
+    border-radius:var(--radius-full);
     font-weight:600;
     font-size:.9rem;
-    color:var(--grey);
+    color:var(--text-muted);
     cursor:pointer;
     transition:all .18s ease;
     display:flex;
     align-items:center;
     justify-content:center;
     gap:7px;
+    font-family: inherit;
   }
   .tab-btn.active{
-    background:var(--gold);
+    background:var(--text);
     color:#fff;
   }
 
@@ -185,13 +236,13 @@
     margin-bottom:22px;
   }
   .progress-track{
-    background:#eee3c8;
+    background: #e0e4f0;
     border-radius:10px;
     height:8px;
     overflow:hidden;
   }
   .progress-fill{
-    background:var(--gold);
+    background:var(--blue);
     height:100%;
     border-radius:10px;
     transition:width .3s ease;
@@ -199,7 +250,7 @@
   }
   .progress-label{
     font-size:.72rem;
-    color:var(--grey);
+    color:var(--text-muted);
     font-weight:600;
     margin-top:6px;
     display:flex;
@@ -208,17 +259,17 @@
 
   /* ============ SCENARIO CARD ============ */
   .scenario-card{
-    background:var(--cream-card);
-    border:1px solid var(--cream-border);
-    border-radius:14px;
+    background:var(--bg-white);
+    border:1px solid rgba(212,216,232,0.8);
+    border-radius:20px;
     padding:30px;
-    box-shadow:0 2px 10px rgba(184,134,11,.05);
+    box-shadow: var(--shadow);
     position:relative;
     min-height:180px;
   }
   .scenario-progress{
     font-size:.74rem;
-    color:var(--grey);
+    color:var(--text-muted);
     font-weight:600;
     margin-bottom:16px;
     text-transform:uppercase;
@@ -229,27 +280,26 @@
     font-size:.68rem;
     font-weight:700;
     padding:3px 9px;
-    border-radius:20px;
+    border-radius:var(--radius-full);
     margin-left:8px;
     text-transform:uppercase;
     letter-spacing:.03em;
     vertical-align:middle;
   }
   .difficulty-badge.easy{background:#eef7f0;color:var(--success);}
-  .difficulty-badge.medium{background:#f4e8cb;color:var(--gold-dark);}
+  .difficulty-badge.medium{background:rgba(107,127,215,0.12);color:var(--blue);}
   .difficulty-badge.hard{background:#fbeeeb;color:var(--error);}
-  .difficulty-badge.tricky{background:#f4e8cb;color:var(--gold-dark);}
+  .difficulty-badge.tricky{background:#f4e8cb;color:#8a660a;}
   .difficulty-badge.expert{background:#f1e6fb;color:#7a3fc4;}
-
   .ai-badge{
     display:inline-block;
     font-size:.66rem;
     font-weight:700;
     padding:3px 9px;
-    border-radius:20px;
+    border-radius:var(--radius-full);
     margin-left:8px;
-    background:#e9f1ff;
-    color:#2a5db0;
+    background:rgba(107,127,215,0.12);
+    color:var(--blue);
     text-transform:uppercase;
     letter-spacing:.03em;
     vertical-align:middle;
@@ -257,31 +307,32 @@
 
   /* Email formatting */
   .email-box{
-    border:1px solid var(--cream-border);
-    border-radius:10px;
+    border:1px solid var(--border);
+    border-radius:12px;
     overflow:hidden;
     margin-bottom:22px;
   }
   .email-box .meta{
-    background:#f6f1e4;
+    background: #e8ecf8;
     padding:14px 18px;
     font-size:.84rem;
   }
   .email-box .meta div{margin-bottom:3px;}
-  .email-box .meta b{color:var(--ink);}
-  .email-box .meta .from-addr{color:var(--grey);}
+  .email-box .meta b{color:var(--text);}
+  .email-box .meta .from-addr{color:var(--text-muted);}
   .email-box .content{
     padding:20px 18px;
     font-size:.9rem;
     line-height:1.7;
-    color:var(--ink);
+    color:var(--text);
+    background: var(--bg-white);
   }
   .email-box .content .btn-fake{
     display:inline-block;
-    background:var(--gold);
+    background:var(--text);
     color:#fff;
     padding:8px 18px;
-    border-radius:6px;
+    border-radius:8px;
     margin-top:10px;
     font-size:.84rem;
     font-weight:600;
@@ -289,7 +340,7 @@
 
   /* SMS formatting */
   .sms-frame{
-    background:#f6f1e4;
+    background: #e8ecf8;
     border-radius:14px;
     padding:24px 16px;
     margin-bottom:22px;
@@ -299,25 +350,26 @@
   }
   .sms-sender{
     font-size:.76rem;
-    color:var(--grey);
+    color:var(--text-muted);
     font-weight:600;
     margin-bottom:8px;
     margin-left:6px;
   }
   .sms-bubble{
-    background:#eae2cd;
-    color:var(--ink);
+    background: var(--bg-white);
+    color:var(--text);
     padding:12px 16px;
     border-radius:18px;
     border-bottom-left-radius:4px;
     font-size:.9rem;
     max-width:88%;
     line-height:1.5;
+    border: 1px solid var(--border);
   }
 
   /* Call transcript formatting */
   .call-frame{
-    background:#2e2a24;
+    background:var(--bg-dark);
     color:#efe8d8;
     border-radius:14px;
     padding:20px;
@@ -332,16 +384,16 @@
     gap:10px;
     margin-bottom:14px;
     padding-bottom:12px;
-    border-bottom:1px solid #4a453b;
-    font-family:'Google Sans','Segoe UI',Roboto,sans-serif;
+    border-bottom:1px solid #3a3a50;
+    font-family: var(--font);
   }
   .call-frame .caller-info .dot{
     width:9px;height:9px;
-    background:var(--gold-light);
+    background:var(--blue);
     border-radius:50%;
   }
   .call-frame .line{margin-bottom:6px;}
-  .call-frame .line b{color:#e0c374;}
+  .call-frame .line b{color:#a8b4e8;}
 
   /* Answer buttons */
   .answer-row{
@@ -352,18 +404,19 @@
   .answer-btn{
     flex:1;
     padding:13px 0;
-    border-radius:10px;
+    border-radius:var(--radius-full);
     font-weight:600;
     font-size:.92rem;
     cursor:pointer;
-    border:1px solid var(--cream-border);
-    background:var(--cream-card);
-    color:var(--ink);
+    border:1.5px solid var(--border);
+    background:var(--bg-white);
+    color:var(--text);
     transition:all .15s ease;
+    font-family: inherit;
   }
   .answer-btn:hover:not(:disabled){
     transform:translateY(-1px);
-    box-shadow:0 4px 10px rgba(0,0,0,.04);
+    box-shadow: var(--shadow);
   }
   .answer-btn.real{border-color:#bcdcc7; color:var(--success);}
   .answer-btn.fake{border-color:#e8c1b8; color:var(--error);}
@@ -403,34 +456,42 @@
   .result-card.incorrect .verdict{color:var(--error);}
   .result-card .explanation{
     font-size:.86rem;
-    color:var(--ink);
+    color:var(--text);
     line-height:1.65;
   }
-
   .next-btn{
     margin-top:18px;
     width:100%;
-    background:var(--gold);
+    background:var(--text);
     color:#fff;
     border:none;
     padding:13px 0;
-    border-radius:10px;
+    border-radius:var(--radius-full);
     font-weight:600;
     font-size:.92rem;
     cursor:pointer;
     transition:background .2s ease;
     display:none;
+    font-family: inherit;
   }
-  .next-btn:hover{background:var(--gold-dark);}
+  .next-btn:hover{background:#2a3150;}
   .next-btn:disabled{opacity:.6;cursor:not-allowed;}
-
   .done-card{
     text-align:center;
     padding:44px 20px;
     display:none;
+    background: var(--bg-white);
+    border: 1px solid rgba(212,216,232,0.8);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
   }
-  .done-card h2{margin-bottom:10px; font-weight:600;}
-  .done-card p{color:var(--grey); margin-bottom:20px;}
+  .done-card h2{
+    margin-bottom:10px;
+    font-family: var(--serif);
+    font-weight:400;
+    font-size: 1.5rem;
+  }
+  .done-card p{color:var(--text-muted); margin-bottom:20px;}
   .done-card .level-result{
     font-weight:700;
     font-size:1.05rem;
@@ -439,28 +500,30 @@
   .done-card .level-result.pass{color:var(--success);}
   .done-card .level-result.fail{color:var(--error);}
   .restart-btn{
-    background:var(--gold);
+    background:var(--text);
     color:#fff;
     border:none;
     padding:12px 28px;
-    border-radius:10px;
+    border-radius:var(--radius-full);
     font-weight:600;
     cursor:pointer;
+    font-family: inherit;
+    transition: background 0.2s;
   }
-
+  .restart-btn:hover{background:#2a3150;}
   .inline-loading{
     display:flex;
     align-items:center;
     justify-content:center;
     gap:12px;
     padding:50px 0;
-    color:var(--grey);
+    color:var(--text-muted);
     font-size:.88rem;
   }
   .inline-spinner{
     width:22px;height:22px;
-    border:3px solid #ecdfc2;
-    border-top-color:var(--gold);
+    border:3px solid #d4d8e8;
+    border-top-color:var(--blue);
     border-radius:50%;
     animation:spin 0.8s linear infinite;
   }
@@ -469,7 +532,7 @@
   .modal-overlay{
     position:fixed;
     inset:0;
-    background:rgba(46,42,36,.45);
+    background:rgba(30,36,64,.45);
     display:none;
     align-items:center;
     justify-content:center;
@@ -478,45 +541,49 @@
   }
   .modal-overlay.open{display:flex;}
   .modal-box{
-    background:var(--cream-card);
-    border-radius:14px;
+    background:var(--bg-white);
+    border-radius:20px;
     padding:28px;
     max-width:420px;
     width:100%;
-    box-shadow:0 10px 40px rgba(0,0,0,.15);
+    box-shadow:var(--shadow-lg);
+    border: 1px solid var(--border);
   }
-  .modal-box h3{font-size:1.1rem;margin-bottom:6px;}
-  .modal-box p{font-size:.82rem;color:var(--grey);margin-bottom:16px;line-height:1.5;}
-  .modal-box label{font-size:.78rem;font-weight:600;color:var(--ink);display:block;margin-bottom:6px;}
+  .modal-box h3{font-size:1.1rem;margin-bottom:6px;font-family:var(--serif);font-weight:400;}
+  .modal-box p{font-size:.82rem;color:var(--text-muted);margin-bottom:16px;line-height:1.5;}
+  .modal-box label{font-size:.78rem;font-weight:600;color:var(--text);display:block;margin-bottom:6px;}
   .modal-box input[type="password"], .modal-box input[type="text"]{
     width:100%;
     padding:10px 12px;
-    border:1px solid var(--cream-border);
-    border-radius:8px;
+    border:1.5px solid var(--border);
+    border-radius:var(--radius-sm);
     font-size:.88rem;
     margin-bottom:14px;
     font-family:inherit;
+    background: var(--bg);
   }
-  .modal-box input:focus{outline:none;border-color:var(--gold);}
+  .modal-box input:focus{outline:none;border-color:var(--blue);background:#fff;}
   .modal-actions{display:flex;gap:10px;justify-content:flex-end;}
   .modal-btn-secondary{
     background:transparent;
-    border:1px solid var(--cream-border);
+    border:1px solid var(--border);
     padding:9px 18px;
-    border-radius:8px;
+    border-radius:var(--radius-full);
     cursor:pointer;
     font-weight:500;
     font-size:.85rem;
+    font-family: inherit;
   }
   .modal-btn-primary{
-    background:var(--gold);
+    background:var(--text);
     color:#fff;
     border:none;
     padding:9px 18px;
-    border-radius:8px;
+    border-radius:var(--radius-full);
     cursor:pointer;
     font-weight:600;
     font-size:.85rem;
+    font-family: inherit;
   }
   .modal-status{
     font-size:.78rem;
@@ -525,25 +592,25 @@
   }
   .modal-status.ok{color:var(--success);}
   .modal-status.err{color:var(--error);}
-
   @media (max-width:600px){
     .user-area{width:100%; justify-content:space-between;}
     .tab-btn span.tab-label{display:none;}
+    header{height:auto;padding:12px 5%;}
   }
 </style>
 </head>
 <body>
+  <div class="bg-shapes" aria-hidden="true"></div>
 
   <div class="spinner-overlay" id="authSpinner">
     <div class="spinner"></div>
     <p>Loading your training dashboard...</p>
   </div>
-
   <header>
     <div class="brand">
       <div class="logo-badge">CS</div>
       <div class="brand-text">
-        <b>Celton Solutions</b>
+        <b>Celton<span>.</span></b>
         <span>Phishing Awareness Training</span>
       </div>
     </div>
@@ -554,13 +621,11 @@
       <button class="logout-btn" id="logoutBtn">Log Out</button>
     </div>
   </header>
-
   <main id="mainContent" class="hidden">
     <div class="intro">
       <h1>Can you spot the phish?</h1>
       <p>Scenarios are freshly generated for your level — the further you get, the trickier they become.</p>
     </div>
-
     <div class="tabs">
       <button class="tab-btn active" data-category="email" onclick="switchCategory('email')">
         ✉ <span class="tab-label">Email</span>
@@ -572,7 +637,6 @@
         📞 <span class="tab-label">Call</span>
       </button>
     </div>
-
     <div class="progress-wrap">
       <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
       <div class="progress-label">
@@ -580,24 +644,19 @@
         <span id="progressScore">Correct: 0/10</span>
       </div>
     </div>
-
     <div class="scenario-card" id="scenarioCard">
       <div class="scenario-progress" id="scenarioProgress"></div>
       <div id="scenarioContent"></div>
-
       <div class="answer-row" id="answerRow">
         <button class="answer-btn real" id="btnReal" onclick="submitAnswer('real')">Real</button>
         <button class="answer-btn fake" id="btnFake" onclick="submitAnswer('fake')">Fake</button>
       </div>
-
       <div class="result-card" id="resultCard">
         <div class="verdict" id="verdictText"></div>
         <div class="explanation" id="explanationText"></div>
       </div>
-
       <button class="next-btn" id="nextBtn" onclick="nextScenario()">Next Scenario →</button>
     </div>
-
     <div class="done-card" id="doneCard">
       <h2>Level Complete</h2>
       <div class="level-result" id="levelResultText"></div>
@@ -605,11 +664,9 @@
       <button class="restart-btn" onclick="restartCategory()">Play Again</button>
     </div>
   </main>
-
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
   <script>
   const firebaseConfig = {
     apiKey: "AIzaSyCMAoi6Foulpl5y5Je1A9swAhJueXe2zpk",
@@ -619,35 +676,27 @@
     messagingSenderId: "362571582561",
     appId: "1:362571582561:web:679fae8fa972473e7bae20",
    };
-
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-
     let currentUser = null;
     let currentScore = 0;
-
     // Per-category level (1-5)
     let levels = { email: 1, sms: 1, call: 1 };
-
     const QUESTIONS_PER_LEVEL = 10;
     const PASS_THRESHOLD = 0.7; // 70% correct to advance
     const MAX_LEVEL = 5;
     const DIFFICULTY_BY_LEVEL = { 1: "easy", 2: "medium", 3: "hard", 4: "tricky", 5: "expert" };
-
     // ============================================================
     // GROQ API KEY — paste your key below to enable AI-generated scenarios.
     // Leave as an empty string to fall back to the built-in scenario bank.
     // ============================================================
     const GROQ_API_KEY = ""; // <-- put your Groq API key here, e.g. "gsk_xxxxxxxxxxxx"
-
     const GROQ_MODEL = "llama-3.3-70b-versatile";
     const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
-
     function getGroqKey() {
       return GROQ_API_KEY;
     }
-
     // ============================================================
     // AUTH
     // ============================================================
@@ -656,14 +705,11 @@
         window.location.href = "login.html";
         return;
       }
-
       currentUser = user;
       document.getElementById('userEmailDisplay').textContent = user.email;
-
       try {
         const docRef = db.collection('users').doc(user.uid);
         const docSnap = await docRef.get();
-
         if (docSnap.exists) {
           const data = docSnap.data();
           currentScore = data.score || 0;
@@ -676,29 +722,23 @@
       } catch (err) {
         console.error("Error loading progress:", err);
       }
-
       document.getElementById('authSpinner').classList.add('hidden');
       document.getElementById('mainContent').classList.remove('hidden');
-
       startLevelSession();
     });
-
     document.getElementById('logoutBtn').addEventListener('click', async () => {
       await auth.signOut();
       window.location.href = "login.html";
     });
-
     function updateScoreDisplay() {
       document.getElementById('scoreDisplay').textContent = currentScore;
       document.getElementById('levelDisplay').textContent = levels[currentCategory] || 1;
     }
-
     async function incrementScore() {
       currentScore += 1;
       updateScoreDisplay();
       persistProgress();
     }
-
     async function persistProgress() {
       if (!currentUser) return;
       try {
@@ -710,7 +750,6 @@
         console.error("Error saving progress:", err);
       }
     }
-
     // ============================================================
     // FALLBACK STATIC SCENARIOS (used when no AI key is set, or AI call fails)
     // ============================================================
@@ -803,7 +842,6 @@
         }
       ]
     };
-
     // ============================================================
     // AI SCENARIO GENERATION
     // ============================================================
@@ -832,33 +870,25 @@
         "colleague locked out asking for access", "law enforcement or compliance impersonation"
       ]
     };
-
     function pickTheme(category) {
       const pool = THEMES_BY_CATEGORY[category];
       return pool[Math.floor(Math.random() * pool.length)];
     }
-
     function buildPrompt(category, difficulty, forceIsReal, theme) {
       const shapeByCategory = {
         email: `"render": { "from": "Display Name", "fromAddr": "email@domain.com", "subject": "Subject line", "body": "HTML-formatted body, may use <br> and <b>" }`,
         sms: `"render": { "sender": "Sender Name or Number", "text": "message text" }`,
         call: `"render": { "callerName": "Caller Name/Team", "callerNumber": "Number or Ext.", "transcript": [ { "speaker": "Caller", "text": "..." }, { "speaker": "You", "text": "..." } ] }`
       };
-
       const realFakeInstruction = forceIsReal
         ? `This scenario MUST be REAL (legitimate) — a genuine, benign communication with no malicious intent. It may include a minor distractor (slight urgency, an unfamiliar-sounding but real internal process) that a nervous employee might over-flag, but it must NOT be phishing.`
         : `This scenario MUST be FAKE (phishing/social-engineering) — it must contain a genuine attack. At higher difficulty, make the red flags subtle: fewer obvious spelling errors or generic greetings, more plausible pretexting, believable sender identity, and a request that sounds like normal business rather than an obvious scam.`;
-
       return `You are generating a single scenario for a corporate phishing-awareness training game for employees of a fictional company called "Celton Solutions".
-
 Category: ${category}
 Difficulty: ${difficulty}
 Pretext/theme to build this scenario around: ${theme}
-
 ${realFakeInstruction}
-
 Vary names, departments, wording, tone, and structure from anything generic — do not reuse stock phrasing like "urgent action required" or "verify your account" unless the theme genuinely calls for it. Make it feel like a fresh, specific situation.
-
 Respond with ONLY a raw JSON object, no markdown fences, no commentary, matching exactly this shape:
 {
   "isReal": ${forceIsReal ? "true" : "false"},
@@ -866,16 +896,12 @@ Respond with ONLY a raw JSON object, no markdown fences, no commentary, matching
   ${shapeByCategory[category]},
   "explanation": "2-4 sentences explaining what made this real or fake, written as employee-facing security training feedback."
 }
-
 Do not reference real companies, real people, or real phone numbers/domains other than the fictional "celtonsolutions.com" domain. Keep body/text content realistic in length for the medium.`;
     }
-
     async function generateAIScenario(category, difficulty, forceIsReal) {
       const key = getGroqKey();
       if (!key) return null;
-
       const theme = pickTheme(category);
-
       const res = await fetch(GROQ_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
@@ -886,7 +912,6 @@ Do not reference real companies, real people, or real phone numbers/domains othe
           messages: [{ role: "user", content: buildPrompt(category, difficulty, forceIsReal, theme) }]
         })
       });
-
       if (!res.ok) throw new Error("Groq API error " + res.status);
       const data = await res.json();
       let text = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || "";
@@ -896,26 +921,22 @@ Do not reference real companies, real people, or real phone numbers/domains othe
       parsed.isReal = forceIsReal; // enforce ground truth regardless of what the model echoed back
       return parsed;
     }
-
     function getFallbackScenario(category, index) {
       const list = fallbackScenarios[category];
       return list[index % list.length];
     }
-
     // ============================================================
     // GAME STATE
     // ============================================================
     let currentCategory = 'email';
-    let currentIndex = 0;       // 0-9 within the 10-question level session
+    let currentIndex = 0; // 0-9 within the 10-question level session
     let sessionCorrect = 0;
-    let sessionScenarios = [];  // holds scenario objects as they're generated
+    let sessionScenarios = []; // holds scenario objects as they're generated
     let answered = false;
-
     function difficultyForCurrent() {
       const lvl = levels[currentCategory] || 1;
       return DIFFICULTY_BY_LEVEL[Math.min(lvl, MAX_LEVEL)];
     }
-
     function startLevelSession() {
       currentIndex = 0;
       sessionCorrect = 0;
@@ -925,32 +946,26 @@ Do not reference real companies, real people, or real phone numbers/domains othe
       updateScoreDisplay();
       loadScenario(0);
     }
-
     async function loadScenario(index) {
       updateProgressUI();
       showInlineLoading(true);
-
       const difficulty = difficultyForCurrent();
       let scenario = null;
-
       try {
         scenario = await generateAIScenario(currentCategory, difficulty);
       } catch (err) {
         console.warn("AI generation failed, using fallback:", err.message);
         scenario = null;
       }
-
       if (!scenario) {
         scenario = getFallbackScenario(currentCategory, index);
       } else {
         scenario._aiGenerated = true;
       }
-
       sessionScenarios[index] = scenario;
       showInlineLoading(false);
       renderScenario();
     }
-
     function showInlineLoading(isLoading) {
       const content = document.getElementById('scenarioContent');
       const answerRow = document.getElementById('answerRow');
@@ -966,27 +981,21 @@ Do not reference real companies, real people, or real phone numbers/domains othe
         answerRow.style.display = 'flex';
       }
     }
-
     function updateProgressUI() {
       const pct = Math.round((currentIndex / QUESTIONS_PER_LEVEL) * 100);
       document.getElementById('progressFill').style.width = pct + "%";
       document.getElementById('progressLabel').textContent = `Scenario ${currentIndex + 1} of ${QUESTIONS_PER_LEVEL}`;
       document.getElementById('progressScore').textContent = `Correct: ${sessionCorrect}/${QUESTIONS_PER_LEVEL}`;
     }
-
     function renderScenario() {
       const scenario = sessionScenarios[currentIndex];
       const content = document.getElementById('scenarioContent');
-
       const diffBadge = scenario.difficulty
         ? `<span class="difficulty-badge ${scenario.difficulty}">${scenario.difficulty}</span>` : '';
       const aiBadge = scenario._aiGenerated ? `<span class="ai-badge">AI Generated</span>` : '';
-
       document.getElementById('scenarioProgress').innerHTML =
         `Scenario ${currentIndex + 1} of ${QUESTIONS_PER_LEVEL}${diffBadge}${aiBadge}`;
-
       let html = '';
-
       if (currentCategory === 'email') {
         const r = scenario.render;
         html = `
@@ -1021,9 +1030,7 @@ Do not reference real companies, real people, or real phone numbers/domains othe
           </div>
         `;
       }
-
       content.innerHTML = html;
-
       answered = false;
       document.getElementById('btnReal').disabled = false;
       document.getElementById('btnFake').disabled = false;
@@ -1035,67 +1042,52 @@ Do not reference real companies, real people, or real phone numbers/domains othe
       document.getElementById('scenarioCard').style.display = 'block';
       updateProgressUI();
     }
-
     function submitAnswer(userChoice) {
       if (answered) return;
       answered = true;
-
       const scenario = sessionScenarios[currentIndex];
       const correctAnswer = scenario.isReal ? 'real' : 'fake';
       const isCorrect = (userChoice === correctAnswer);
-
       document.getElementById('btnReal').disabled = true;
       document.getElementById('btnFake').disabled = true;
-
       const resultCard = document.getElementById('resultCard');
       const verdictText = document.getElementById('verdictText');
       const explanationText = document.getElementById('explanationText');
-
       resultCard.style.display = 'block';
       resultCard.className = 'result-card ' + (isCorrect ? 'correct' : 'incorrect');
-
       const correctLabel = scenario.isReal ? 'Real' : 'Fake';
       verdictText.textContent = isCorrect
         ? `Correct — this was ${correctLabel}`
         : `Not quite — this was actually ${correctLabel}`;
-
       explanationText.textContent = scenario.explanation;
-
       if (isCorrect) {
         sessionCorrect += 1;
         incrementScore();
       }
-
       updateProgressUI();
       document.getElementById('nextBtn').style.display = 'block';
       document.getElementById('nextBtn').textContent =
         (currentIndex + 1 >= QUESTIONS_PER_LEVEL) ? "See Results →" : "Next Scenario →";
     }
-
     async function nextScenario() {
       const nextBtn = document.getElementById('nextBtn');
       currentIndex += 1;
-
       if (currentIndex >= QUESTIONS_PER_LEVEL) {
         finishLevel();
         return;
       }
-
       nextBtn.disabled = true;
       await loadScenario(currentIndex);
       nextBtn.disabled = false;
     }
-
     function finishLevel() {
       document.getElementById('scenarioCard').style.display = 'none';
       const doneCard = document.getElementById('doneCard');
       doneCard.style.display = 'block';
-
       const passed = (sessionCorrect / QUESTIONS_PER_LEVEL) >= PASS_THRESHOLD;
       const curLevel = levels[currentCategory] || 1;
       const resultText = document.getElementById('levelResultText');
       const doneText = document.getElementById('doneText');
-
       if (passed && curLevel < MAX_LEVEL) {
         levels[currentCategory] = curLevel + 1;
         resultText.textContent = `Level ${curLevel} Passed! Advancing to Level ${levels[currentCategory]}.`;
@@ -1107,27 +1099,20 @@ Do not reference real companies, real people, or real phone numbers/domains othe
         resultText.textContent = `Level ${curLevel} — Not Quite Yet`;
         resultText.className = "level-result fail";
       }
-
       doneText.textContent = `You scored ${sessionCorrect}/${QUESTIONS_PER_LEVEL} at ${DIFFICULTY_BY_LEVEL[Math.min(curLevel, MAX_LEVEL)]} difficulty. Total score: ${currentScore}.`;
-
       updateScoreDisplay();
       persistProgress();
     }
-
     function restartCategory() {
       startLevelSession();
     }
-
     function switchCategory(category) {
       currentCategory = category;
-
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.category === category);
       });
-
       startLevelSession();
     }
   </script>
-
 </body>
 </html>
