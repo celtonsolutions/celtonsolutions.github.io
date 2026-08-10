@@ -6,27 +6,30 @@
   <title>Celton Solutions | Phishing Awareness Training</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #eef0f8;
-  --bg-white: #ffffff;
-  --bg-dark: #1a1a2e;
+  --bg: #f0f2f8;
+  --bg-elevated: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8f9fc;
   --text: #1e2440;
   --text-muted: #5a6280;
-  --text-light: #8b92a8;
+  --text-dim: #8b92a8;
   --border: #d4d8e8;
-  --yellow: #f5e66b;
+  --border-light: #e2e5f0;
   --blue: #6b7fd7;
-  --radius: 16px;
-  --radius-sm: 10px;
+  --blue-hover: #5a6ec4;
+  --navy: #1e2440;
+  --yellow: #f5e66b;
+  --green: #22c55e;
+  --radius: 12px;
   --radius-full: 999px;
   --font: "Inter", system-ui, -apple-system, sans-serif;
-  --serif: "Libre Baskerville", Georgia, serif;
   --shadow: 0 4px 24px rgba(30, 36, 64, 0.08);
-  --shadow-lg: 0 12px 40px rgba(30, 36, 64, 0.12);
+  --shadow-lg: 0 12px 40px rgba(30, 36, 64, 0.1);
 }
 
 html { scroll-behavior: smooth; }
@@ -38,21 +41,10 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-  animation: pageFade 0.45s ease;
+  min-height: 100vh;
 }
 
-@keyframes pageFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-a { color: inherit; text-decoration: none; }
-
+/* soft background blobs */
 .bg-shapes {
   position: fixed;
   inset: 0;
@@ -63,456 +55,666 @@ a { color: inherit; text-decoration: none; }
 .bg-shapes::before {
   content: "";
   position: absolute;
-  width: 620px;
-  height: 620px;
+  width: 600px;
+  height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(180,190,230,0.4) 0%, transparent 70%);
-  top: -120px;
-  right: -100px;
+  background: radial-gradient(circle, rgba(180,190,230,0.35) 0%, transparent 70%);
+  top: -100px;
+  right: -80px;
 }
 .bg-shapes::after {
   content: "";
   position: absolute;
-  width: 480px;
-  height: 480px;
+  width: 450px;
+  height: 450px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(200,210,240,0.35) 0%, transparent 70%);
-  bottom: 20%;
-  left: -140px;
+  background: radial-gradient(circle, rgba(200,210,240,0.3) 0%, transparent 70%);
+  bottom: 15%;
+  left: -120px;
 }
 
-/* Header */
+/* ========== HEADER ========== */
 header {
   position: relative;
-  z-index: 10;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 6%;
-  height: 66px;
-  background: rgba(238,240,248,0.82);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(212,216,232,0.55);
+  padding: 0 2.5rem;
+  height: 64px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 700;
-  font-size: 1.1rem;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
   color: var(--text);
 }
-.logo span { color: var(--blue); }
-.logo-badge {
-  width: 34px;
-  height: 34px;
-  background: var(--text);
-  border-radius: 9px;
+
+.logo-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--navy);
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  font-size: 0.7rem;
   font-weight: 700;
-  font-size: 0.8rem;
+  color: white;
 }
 
-nav a {
-  display: inline-flex;
+nav.main-nav {
+  display: flex;
   align-items: center;
-  font-weight: 500;
-  font-size: 0.88rem;
-  background: var(--text);
-  color: #fff;
-  padding: 0.55rem 1.2rem;
-  border-radius: var(--radius-full);
-  transition: background 0.18s, transform 0.15s;
-}
-nav a:hover {
-  background: #2a3150;
-  transform: translateY(-1px);
+  gap: 2rem;
 }
 
-/* Hero */
+nav.main-nav a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.15s;
+}
+
+nav.main-nav a:hover {
+  color: var(--text);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-ghost {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-full);
+  transition: color 0.15s, background 0.15s;
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  background: rgba(30, 36, 64, 0.05);
+}
+
+.btn-outline {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+  padding: 0.45rem 1.1rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--bg-white);
+  transition: all 0.15s;
+}
+
+.btn-outline:hover {
+  background: #f8f9fc;
+  border-color: #b8bed4;
+}
+
+/* ========== HERO ========== */
 .hero {
   position: relative;
-  z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5rem 6% 4.5rem;
-  gap: 3rem;
+  z-index: 10;
+  text-align: center;
+  padding: 5rem 1.5rem 3.5rem;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.hero-text {
-  max-width: 540px;
-  animation: fadeUp 0.55s ease;
-}
-
-.pill {
+.badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
   background: rgba(107, 127, 215, 0.12);
   color: var(--blue);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  padding: 0.4rem 0.85rem;
-  border-radius: var(--radius-full);
-  margin-bottom: 1.25rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-}
-.pill::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  background: var(--blue);
-  border-radius: 50%;
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 1.75rem;
+  border: 1px solid rgba(107, 127, 215, 0.2);
 }
 
 h1 {
-  font-family: var(--serif);
-  font-size: clamp(2.2rem, 4.5vw, 3.1rem);
-  font-weight: 400;
+  font-size: clamp(2.4rem, 5.5vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  margin-bottom: 1.25rem;
   color: var(--text);
-  margin-bottom: 1.15rem;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-}
-h1 .highlight {
-  background: var(--yellow);
-  padding: 0 0.15em;
-  border-radius: 3px;
 }
 
-.hero-text p {
+.hero p {
+  font-size: 1.1rem;
   color: var(--text-muted);
-  font-size: 1.02rem;
-  margin-bottom: 1.85rem;
-  max-width: 460px;
-  line-height: 1.7;
+  max-width: 540px;
+  margin: 0 auto 2.25rem;
+  line-height: 1.65;
 }
 
-.cta-group {
+.hero-ctas {
   display: flex;
-  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
 .btn-primary {
   display: inline-flex;
   align-items: center;
-  background: var(--text);
-  color: #fff;
-  padding: 0.8rem 1.5rem;
-  border-radius: var(--radius-full);
+  gap: 0.4rem;
+  background: var(--navy);
+  color: white;
   font-weight: 500;
-  font-size: 0.92rem;
-  transition: background 0.18s, transform 0.15s;
+  font-size: 0.95rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-full);
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
 }
+
 .btn-primary:hover {
   background: #2a3150;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(30, 36, 64, 0.2);
 }
 
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  background: var(--bg-white);
-  color: var(--text);
-  padding: 0.8rem 1.5rem;
-  border-radius: var(--radius-full);
-  font-weight: 500;
-  font-size: 0.92rem;
-  border: 1.5px solid var(--border);
-  transition: border-color 0.18s, box-shadow 0.18s, transform 0.15s;
-}
-.btn-secondary:hover {
-  border-color: #b8bed4;
-  box-shadow: var(--shadow);
-  transform: translateY(-2px);
+.trial-note {
+  font-size: 0.85rem;
+  color: var(--text-dim);
 }
 
-/* Hero visual card */
-.hero-visual {
-  width: 360px;
-  max-width: 100%;
-  background: var(--bg-white);
-  border-radius: 20px;
-  border: 1px solid rgba(212,216,232,0.8);
-  padding: 1.35rem;
-  animation: fadeUp 0.55s ease 0.1s both;
-  box-shadow: var(--shadow-lg);
-  transition: transform 0.25s;
-}
-.hero-visual:hover { transform: translateY(-4px); }
-
-.visual-label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--text-light);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.85rem;
-}
-
-.fake-email {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--bg);
-}
-
-.fake-email .bar {
-  background: #e8ecf8;
-  padding: 0.65rem 0.9rem;
-  font-size: 0.74rem;
-  color: var(--text-muted);
-  display: flex;
-  justify-content: space-between;
-  font-weight: 500;
-}
-
-.fake-email .body {
-  padding: 1rem 0.9rem;
-  font-size: 0.86rem;
-  color: var(--text);
-  line-height: 1.65;
-  background: var(--bg-white);
-}
-
-.fake-email .body .addr {
-  color: var(--blue);
-  font-weight: 600;
-}
-
-.flag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: #fdecea;
-  color: #c0392b;
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 0.3rem 0.65rem;
-  border-radius: 6px;
-  margin-top: 0.75rem;
-  border: 1px solid #f5c6c0;
-}
-
-/* Stats */
-.stats {
+/* ========== DASHBOARD PREVIEW ========== */
+.dashboard-preview {
   position: relative;
-  z-index: 1;
-  padding: 0 6% 3.5rem;
+  z-index: 10;
+  max-width: 1100px;
+  margin: 0 auto 5rem;
+  padding: 0 1.5rem;
+}
+
+.dashboard {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 420px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Sidebar */
+.sidebar {
+  background: #f7f8fc;
+  border-right: 1px solid var(--border);
+  padding: 1.25rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.6rem 1.1rem;
+  color: var(--text);
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  transition: all 0.15s;
+  cursor: default;
+}
+
+.sidebar-item.active {
+  background: rgba(107, 127, 215, 0.12);
+  color: var(--blue);
+}
+
+.sidebar-item:hover:not(.active) {
+  background: rgba(30, 36, 64, 0.04);
+  color: var(--text-muted);
+}
+
+.sidebar-icon {
+  width: 18px;
+  text-align: center;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+/* Main content of dashboard */
+.dash-main {
+  padding: 1.5rem 1.75rem;
+}
+
+.dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.dash-header h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.dash-period {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  background: #f0f2f8;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+}
+
+.stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  max-width: 720px;
-  margin: 0 auto;
+  margin-bottom: 1.5rem;
 }
 
-.stat {
-  background: var(--bg-white);
-  border-radius: var(--radius);
-  padding: 1.35rem 1.15rem;
-  text-align: center;
-  border: 1px solid rgba(212,216,232,0.7);
-  box-shadow: 0 1px 4px rgba(30,36,64,0.04);
+.stat-card {
+  background: #f8f9fc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.2rem;
 }
 
-.stat .num {
-  font-size: 1.85rem;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1;
-  letter-spacing: -0.03em;
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-bottom: 0.4rem;
 }
 
-.stat .lbl {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: 0.4rem;
-}
-
-/* Features */
-section.features {
-  position: relative;
-  z-index: 1;
-  padding: 4rem 6% 5rem;
-}
-
-section.features h2 {
-  font-family: var(--serif);
-  text-align: center;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  font-weight: 400;
-  margin-bottom: 0.65rem;
-  color: var(--text);
+.stat-value {
+  font-size: 1.55rem;
+  font-weight: 600;
   letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+  color: var(--text);
 }
 
-section.features p.sub {
-  text-align: center;
-  color: var(--text-muted);
-  max-width: 500px;
-  margin: 0 auto 2.5rem;
-  font-size: 0.98rem;
-  line-height: 1.65;
+.stat-change {
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.grid {
+.stat-change.up { color: var(--green); }
+.stat-change.neutral { color: var(--text-dim); }
+
+.progress-bar {
+  height: 4px;
+  background: #e2e5f0;
+  border-radius: 2px;
+  margin-top: 0.6rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--blue);
+  border-radius: 2px;
+  width: 68%;
+}
+
+.bottom-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.15rem;
-  max-width: 900px;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1rem;
+}
+
+.chart-card, .category-card {
+  background: #f8f9fc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.2rem;
+}
+
+.chart-title {
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: var(--text-muted);
+}
+
+/* Fake bar chart */
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 110px;
+}
+
+.bar {
+  flex: 1;
+  background: linear-gradient(to top, #a5b4fc, #6b7fd7);
+  border-radius: 4px 4px 0 0;
+  opacity: 0.9;
+}
+
+.bar:nth-child(1) { height: 45%; }
+.bar:nth-child(2) { height: 65%; }
+.bar:nth-child(3) { height: 40%; }
+.bar:nth-child(4) { height: 80%; }
+.bar:nth-child(5) { height: 55%; }
+.bar:nth-child(6) { height: 90%; }
+.bar:nth-child(7) { height: 70%; }
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.category-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot.blue { background: #6b7fd7; }
+.dot.purple { background: #a855f7; }
+.dot.orange { background: #f97316; }
+
+/* ========== FEATURES ========== */
+.features {
+  position: relative;
+  z-index: 10;
+  padding: 2rem 1.5rem 5rem;
+  max-width: 1000px;
   margin: 0 auto;
+  text-align: center;
 }
 
-.card {
-  background: var(--bg-white);
-  border-radius: var(--radius);
+.features h2 {
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
+.features .sub {
+  color: var(--text-muted);
+  max-width: 480px;
+  margin: 0 auto 2.5rem;
+  font-size: 1rem;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
   padding: 1.6rem 1.4rem;
-  border: 1px solid rgba(212,216,232,0.75);
-  transition: transform 0.2s, box-shadow 0.2s;
-  animation: fadeUp 0.5s ease both;
+  text-align: left;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
-.card:nth-child(2) { animation-delay: 0.08s; }
-.card:nth-child(3) { animation-delay: 0.16s; }
-
-.card:hover {
+.feature-card:hover {
+  border-color: #b8bed4;
   transform: translateY(-3px);
   box-shadow: var(--shadow);
 }
 
-.card .icon {
+.feature-icon {
   width: 40px;
   height: 40px;
-  background: #eef0f8;
+  background: rgba(107, 127, 215, 0.12);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--blue);
   font-size: 1.15rem;
   margin-bottom: 1rem;
+  color: var(--blue);
 }
 
-.card h3 {
+.feature-card h3 {
   font-size: 1.05rem;
   font-weight: 600;
   margin-bottom: 0.45rem;
   color: var(--text);
 }
 
-.card p {
-  color: var(--text-muted);
+.feature-card p {
   font-size: 0.9rem;
-  line-height: 1.6;
+  color: var(--text-muted);
+  line-height: 1.55;
 }
 
-/* Footer */
+/* ========== FOOTER ========== */
 footer {
   position: relative;
-  z-index: 1;
+  z-index: 10;
   text-align: center;
-  padding: 1.5rem 6%;
-  color: var(--text-light);
-  font-size: 0.82rem;
-  border-top: 1px solid rgba(212,216,232,0.6);
-  background: rgba(255,255,255,0.4);
+  padding: 1.75rem 1.5rem;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  border-top: 1px solid var(--border);
 }
 
-@media (max-width: 720px) {
-  h1 { font-size: 2rem; }
-  .hero { padding: 3.25rem 6% 2.75rem; }
-  .stats {
+/* ========== RESPONSIVE ========== */
+@media (max-width: 900px) {
+  .dashboard {
     grid-template-columns: 1fr;
-    max-width: 280px;
   }
-  header { padding: 0 5%; }
+  .sidebar {
+    display: none;
+  }
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  nav.main-nav {
+    display: none;
+  }
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+  .bottom-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  header {
+    padding: 0 1.25rem;
+  }
+  .hero {
+    padding: 4rem 1.25rem 3rem;
+  }
+  h1 {
+    font-size: 2.1rem;
+  }
 }
   </style>
 </head>
 <body>
   <div class="bg-shapes" aria-hidden="true"></div>
 
+  <!-- Header -->
   <header>
-    <a href="index.html" class="logo">
-      <div class="logo-badge">CS</div>
-      Celton<span>.</span>
+    <a href="https://celtonsolutions.github.io" class="logo">
+      <div class="logo-icon">CS</div>
+      Celton
     </a>
-    <nav>
-      <a href="login.html">Login / Sign Up</a>
+
+    <nav class="main-nav">
+      <a href="#features">Platform</a>
+      <a href="#features">How it works</a>
+      <a href="#">Pricing</a>
+      <a href="#">About</a>
     </nav>
-  </header>
 
+  <!-- Hero -->
   <section class="hero">
-    <div class="hero-text">
-      <span class="pill">Security awareness training</span>
-      <h1>Learn to spot <span class="highlight">phishing</span><br>before it costs you.</h1>
-      <p>
-        Celton Solutions' interactive training helps employees recognise deceptive emails,
-        SMS messages, and phone calls through realistic, hands-on scenarios —
-        building instinctive, everyday vigilance.
-      </p>
-      <div class="cta-group">
-        <a href="login.html" class="btn-primary">Start Training</a>
-        <a href="#features" class="btn-secondary">Learn More</a>
-      </div>
-    </div>
-
-    <div class="hero-visual">
-      <div class="visual-label">Example scenario</div>
-      <div class="fake-email">
-        <div class="bar">
-          <span>Inbox</span>
-          <span>Just now</span>
-        </div>
-        <div class="body">
-          <span class="addr">IT-Support@ce1ton-solutions.com</span><br><br>
-          "Your network password expires in 60 minutes. Click below to keep access or your account will be suspended."
-          <div class="flag">⚠ Suspicious sender domain</div>
-        </div>
-      </div>
+    <div class="badge">Security awareness</div>
+    <h1>Phishing Awareness<br>Training for Modern Teams</h1>
+    <p>
+      Celton helps employees recognise deceptive emails, SMS messages, and phone calls 
+      through realistic, hands-on scenarios — so your team stays safe without the boring slides.
+    </p>
+    <div class="hero-ctas">
+      <a href="login.html" class="btn-primary">
+        Get started <span style="font-size:1.1em">→</span>
+      </a>
+      <span class="trial-note">Free for internal teams · No credit card required</span>
     </div>
   </section>
 
-  <div class="stats">
-    <div class="stat">
-      <div class="num">9</div>
-      <div class="lbl">Scenarios across 3 channels</div>
-    </div>
-    <div class="stat">
-      <div class="num">3</div>
-      <div class="lbl">Attack types covered</div>
-    </div>
-    <div class="stat">
-      <div class="num">~5 min</div>
-      <div class="lbl">Per category</div>
+  <!-- Dashboard Preview -->
+  <div class="dashboard-preview">
+    <div class="dashboard">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+          <div class="logo-icon" style="width:22px;height:22px;font-size:0.6rem;">CS</div>
+          Celton
+        </div>
+        <div class="sidebar-item active">
+          <span class="sidebar-icon">◉</span> Overview
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-icon">✉</span> Email
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-icon">💬</span> SMS
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-icon">📞</span> Voice
+        </div>
+        <div class="sidebar-item">
+          <span class="sidebar-icon">📊</span> Reports
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <div class="dash-main">
+        <div class="dash-header">
+          <h2>Overview</h2>
+          <div class="dash-period">Last 30 days</div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Training completion</div>
+            <div class="stat-value">87%</div>
+            <div class="stat-change up">↑ 12.4%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Scenarios completed</div>
+            <div class="stat-value">1,284</div>
+            <div class="stat-change up">↑ 8 this week</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Risk reduction</div>
+            <div class="stat-value">68%</div>
+            <div class="stat-change neutral">On track</div>
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-row">
+          <div class="chart-card">
+            <div class="chart-title">Monthly training activity</div>
+            <div class="bars">
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+            </div>
+          </div>
+          <div class="category-card">
+            <div class="chart-title">By channel</div>
+            <div class="category-list">
+              <div class="category-item">
+                <span class="category-name"><span class="dot blue"></span> Email Phishing</span>
+                <span>42%</span>
+              </div>
+              <div class="category-item">
+                <span class="category-name"><span class="dot purple"></span> SMS Smishing</span>
+                <span>31%</span>
+              </div>
+              <div class="category-item">
+                <span class="category-name"><span class="dot orange"></span> Voice Phishing</span>
+                <span>27%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
+  <!-- Features -->
   <section class="features" id="features">
     <h2>Train across every channel</h2>
-    <p class="sub">Attackers don't just use email. Our game covers the three most common phishing vectors employees face today.</p>
-    <div class="grid">
-      <div class="card">
-        <div class="icon">✉</div>
+    <p class="sub">Attackers don’t just use email. Our platform covers the three most common phishing vectors employees face today.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">✉</div>
         <h3>Email Phishing</h3>
         <p>Spot spoofed domains, urgent language, and social-engineering tactics in realistic inbox simulations.</p>
       </div>
-      <div class="card">
-        <div class="icon">💬</div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
         <h3>SMS Smishing</h3>
         <p>Identify fraudulent text messages impersonating IT, banks, delivery services, and colleagues.</p>
       </div>
-      <div class="card">
-        <div class="icon">📞</div>
+      <div class="feature-card">
+        <div class="feature-icon">📞</div>
         <h3>Voice Phishing</h3>
         <p>Recognise social engineering tactics in vishing calls and convincing impersonation scenarios.</p>
       </div>
